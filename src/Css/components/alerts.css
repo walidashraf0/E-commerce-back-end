@@ -1,0 +1,13 @@
+span.error {
+    padding: 15px 20px;
+    background-color: #f8d7da;
+    color: #842029;
+    margin-top: 20px;
+    display: block;
+    width: 80%;
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    -ms-border-radius: 12px;
+    -o-border-radius: 12px;
+}
