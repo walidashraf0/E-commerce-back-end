@@ -18,7 +18,7 @@ export default function Users() {
       }})
       .then((data) => console.log(data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [cookie]);
 
   
 

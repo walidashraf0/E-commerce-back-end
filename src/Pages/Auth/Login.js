@@ -2,7 +2,8 @@ import axios from "axios";
 import { useState } from "react";
 import { LOGIN, baseURL } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
-import Cookie from 'cookie-universal';
+import Cookie from "cookie-universal";
+import Form from "react-bootstrap/Form";
 
 export default function Login() {
   // States
@@ -11,14 +12,14 @@ export default function Login() {
     password: "",
   });
 
-  // Loading 
+  // Loading
   const [loading, setLoading] = useState(false);
 
   // Cookies
   const cookie = Cookie();
 
-    // Err
-    const [err, setErr] = useState("");
+  // Err
+  const [err, setErr] = useState("");
 
   //handle For Change
   function handleChange(e) {
@@ -38,7 +39,7 @@ export default function Login() {
       const token = res.data.token;
       cookie.set(`e-commerce`, token);
       window.location.pathname = "/users";
-      setErr("")
+      setErr("");
       console.log(res.data);
     } catch (err) {
       setLoading(false);
@@ -57,41 +58,45 @@ export default function Login() {
     <>
       {loading === true ? <Loading /> : ""}
       <div className="container">
-        <div className="row h-100">
-          <form className="form" onSubmit={handleSubmit}>
+        <div className="row" style={{height: "100vh"}}>
+          <Form className="form" onSubmit={handleSubmit}>
             <div className="custom-form">
-              <h1>Login</h1>
-              <div className="form-control mb-3">
-                <input
+              <h1 className="mb-4">Login</h1>
+
+              <Form.Group className="form-custom" controlId="exampleForm.ControlInput1">
+                <Form.Control
                   type="email"
-                  id="email"
+                  name="email"
                   value={form.email}
                   onChange={handleChange}
-                  name="email"
-                  placeholder="Enter Your Email"
+                  placeholder="Enter Your Email.."
                   required
                 />
-                <label htmlFor="email">Email</label>
-              </div>
-              <div className="form-control mb-3">
-                <input
+                <Form.Label>Email:</Form.Label>
+              </Form.Group>
+
+              <Form.Group className="form-custom" controlId="exampleForm.ControlInput2">
+                <Form.Control
                   type="password"
-                  id="password"
+                  name="password"
                   value={form.password}
                   onChange={handleChange}
-                  name="password"
-                  placeholder="Enter Your Password"
+                  placeholder="Enter Your Password.."
                   minLength="6"
                   required
                 />
-                <label htmlFor="password">Password</label>
-              </div>
+                <Form.Label>Password:</Form.Label>
+              </Form.Group>
 
               <button className="btn btn-primary">Submit</button>
               <div className="google-btn">
                 <a href={`http://127.0.0.1:8000/login-google`}>
                   <div className="google-icon-wrapper">
-                    <img className="google-icon" src="https://static-00.iconduck.com/assets.00/google-icon-2048x2048-pks9lbdv.png" alt="sign in with google"/>
+                    <img
+                      className="google-icon"
+                      src="https://static-00.iconduck.com/assets.00/google-icon-2048x2048-pks9lbdv.png"
+                      alt="sign in with google"
+                    />
                   </div>
                   <p className="btn-text">
                     <b>Sign in with google</b>
@@ -100,7 +105,7 @@ export default function Login() {
               </div>
               {err !== "" ? <span className="error">{err}</span> : ""}
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </>
