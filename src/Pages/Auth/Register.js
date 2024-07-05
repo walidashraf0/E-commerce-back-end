@@ -4,6 +4,7 @@ import { REGISTER, baseURL } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
 import Cookie from "cookie-universal";
 import { Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   // States
@@ -12,6 +13,8 @@ export default function Register() {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +38,7 @@ export default function Register() {
       setLoading(false);
       const token = res.data.token;
       cookie.set(`e-commerce`, token);
-      window.location.pathname = "/users";
+      navigate('/login', {replace: true});
     } catch (err) {
       setLoading(false);
       console.log(err)
@@ -53,8 +56,8 @@ export default function Register() {
   return (
     <>
       {loading === true ? <Loading /> : ""}
-      <div className="container">
-        <div className="row" style={{height: "100vh"}}>
+      <div className="container d-flex justify-content-center align-items-center" style={{height: "100vh"}}>
+        <div className="row w-100">
           <Form className="form" onSubmit={handleSubmit}>
             <div className="custom-form">
               <h1 className="mb-4">Register Now</h1>

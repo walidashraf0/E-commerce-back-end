@@ -1,11 +1,13 @@
-import { Route, Routes } from 'react-router-dom';
-import './App.css';
-import HomePage from './Pages/Website/HomePage';
-import Login from './Pages/Auth/Login';
-import Register from './Pages/Auth/Register';
-import Users from './Pages/Dashboard/Users';
-import GoogleCallBack from './Pages/Auth/GoogleCallBack';
-import Dashboard from './Pages/Dashboard/Dashboard';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import HomePage from "./Pages/Website/HomePage";
+import Login from "./Pages/Auth/Login";
+import Register from "./Pages/Auth/Register";
+import Users from "./Pages/Dashboard/Users";
+import GoogleCallBack from "./Pages/Auth/GoogleCallBack";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import RequireAuth from "./Pages/Auth/RequireAuth";
+import User from "./Pages/Dashboard/User";
 // import TopBar from './Components/Dashboard/TopBar';
 // import SideBar from './Components/Dashboard/SideBar';
 
@@ -14,14 +16,16 @@ function App() {
     <div className="App">
       <Routes>
         {/* Public Routes  */}
-        <Route path='/' element={<HomePage />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/users' element={<Users />} />
-        <Route path='/auth/google/callback' element={<GoogleCallBack />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/auth/google/callback" element={<GoogleCallBack />} />
         {/* Protected Routes  */}
-        <Route path='/dashboard' element={<Dashboard />}>
-            <Route path='users' element={<Users />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="users" element={<Users />} />
+            <Route path="users/:id" element={<User />} />
+          </Route>
         </Route>
       </Routes>
     </div>

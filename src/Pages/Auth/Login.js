@@ -4,6 +4,7 @@ import { LOGIN, baseURL } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
 import Cookie from "cookie-universal";
 import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   // States
@@ -11,6 +12,8 @@ export default function Login() {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   // Loading
   const [loading, setLoading] = useState(false);
@@ -38,7 +41,7 @@ export default function Login() {
       setLoading(false);
       const token = res.data.token;
       cookie.set(`e-commerce`, token);
-      window.location.pathname = "/users";
+      navigate('/dashboard/users', { replace: true });
       setErr("");
       console.log(res.data);
     } catch (err) {
@@ -57,8 +60,8 @@ export default function Login() {
   return (
     <>
       {loading === true ? <Loading /> : ""}
-      <div className="container">
-        <div className="row" style={{height: "100vh"}}>
+      <div className="container d-flex justify-content-center align-items-center" style={{height: "100vh"}}>
+        <div className="row w-100">
           <Form className="form" onSubmit={handleSubmit}>
             <div className="custom-form">
               <h1 className="mb-4">Login</h1>
@@ -88,7 +91,7 @@ export default function Login() {
                 <Form.Label>Password:</Form.Label>
               </Form.Group>
 
-              <button className="btn btn-primary">Submit</button>
+              <button className="btn btn-primary">Login</button>
               <div className="google-btn">
                 <a href={`http://127.0.0.1:8000/login-google`}>
                   <div className="google-icon-wrapper">
