@@ -43,7 +43,7 @@ export default function Login() {
       cookie.set(`e-commerce`, token);
       navigate('/dashboard/users', { replace: true });
       setErr("");
-      console.log(res.data);
+      // console.log(res.data);
     } catch (err) {
       setLoading(false);
       if (err.response.status === 401) {
@@ -55,7 +55,7 @@ export default function Login() {
     }
   }
 
-  console.log(form);
+  // console.log(form);
 
   return (
     <>
