@@ -10,7 +10,7 @@ export default function RequireAuth() {
 
   //User
   const [user, setUser] = useState("");
-  console.log(user);
+  // console.log(user);
 
   useEffect(() => {
     Axios.get(`/${USER}`)
@@ -21,8 +21,6 @@ export default function RequireAuth() {
   // Token & Cookie
   const cookie = Cookie();
   const token = cookie.get("e-commerce");
-
-  //
 
   return token ? (
     user === "" ? (
