@@ -41,7 +41,7 @@ export default function Login() {
       setLoading(false);
       const token = res.data.token;
       cookie.set(`e-commerce`, token);
-      navigate('/dashboard/users', { replace: true });
+      window.location.pathname = '/dashboard/users';
       setErr("");
       // console.log(res.data);
     } catch (err) {

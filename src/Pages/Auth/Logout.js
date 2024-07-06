@@ -1,8 +1,8 @@
 import { LOGOUT, baseURL } from "../../Api/Api";
 import { Axios } from "../../Api/Axios";
 
-export default function Logout() {
 
+export default function Logout() {
 
     async function handleLogout() {
         try {

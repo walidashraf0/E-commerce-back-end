@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { USER } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
 import { Axios } from "../../Api/Axios";
+import Err403 from "./403";
 
-export default function RequireAuth() {
+export default function RequireAuth({ allowedRole }) {
   const navigate = useNavigate();
 
   //User
@@ -25,8 +26,10 @@ export default function RequireAuth() {
   return token ? (
     user === "" ? (
       <Loading />
-    ) : (
+    ) : user.role === allowedRole ? (
       <Outlet />
+    ) : (
+      <Err403 />
     )
   ) : (
     <Navigate to={"/login"} replace={true} />

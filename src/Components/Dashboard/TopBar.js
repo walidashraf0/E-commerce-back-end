@@ -31,6 +31,7 @@ export default function TopBar() {
   async function handleLogOut() {
     try {
         const res = await Axios.get(`/${LOGOUT}`);
+        cookie.remove("e-commerce");
         window.location.pathname = "/login";
         // console.log(res);
     } catch (err) {
