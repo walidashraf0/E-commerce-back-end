@@ -4,35 +4,24 @@ import { Axios } from "../../Api/Axios";
 import { USER } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
 
-export default function User() {
+export default function AddUser() {
 
     
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
-    const [disable, setDisable] = useState(true);
     const [loading, setLoading] = useState(false);
-    
-    // Id
-    const id = Number(window.location.pathname.replace("/dashboard/users/", ""));
-    // console.log(id);
 
-
-    useEffect(() => {
-        Axios.get(`${USER}/${id}`).then((data) => {
-            setName(data.data.name);
-            setEmail(data.data.email);
-            setRole(data.data.role);
-        }).then(() => setDisable(false));
-    },[])
 
     async function handleSubmit(e) {
       setLoading(true);
         e.preventDefault();
         try {
-          const res = await Axios.post(`${USER}/edit/${id}`, {
+          const res = await Axios.post(`${USER}/add`, {
             name: name,
             email: email,
+            password: password,
             role: role,
           });
           window.location.pathname = "/dashboard/users";
@@ -58,6 +47,10 @@ export default function User() {
           <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} type="email" required placeholder="email@example.com" />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlControlInput3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" required placeholder="password" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="exampleForm.ControlControlInput4">
           <Form.Label>Role</Form.Label>
           <Form.Select value={role} onChange={(e) => setRole(e.target.value)}>
             <option disabled value={""}>Select Role</option>
@@ -66,7 +59,7 @@ export default function User() {
             <option value={1996}>Writer</option>
           </Form.Select>
         </Form.Group>
-        <button disabled={disable} className="btn btn-primary">Save</button>
+        <button disabled={name.length > 1 && email.length > 1 && password > 6 && role !== "" ? false: true} className="btn btn-primary">Save</button>
       </Form>
     </>
   );
