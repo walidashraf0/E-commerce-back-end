@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import { Axios } from "../../Api/Axios";
 import { USER } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
+import { useNavigate } from "react-router-dom";
 
 export default function User() {
 
@@ -12,18 +13,19 @@ export default function User() {
     const [role, setRole] = useState("");
     const [disable, setDisable] = useState(true);
     const [loading, setLoading] = useState(false);
-    
+    const navigate = useNavigate();
     // Id
     const id = Number(window.location.pathname.replace("/dashboard/users/", ""));
     // console.log(id);
 
-
     useEffect(() => {
+      setLoading(true);
         Axios.get(`${USER}/${id}`).then((data) => {
-            setName(data.data.name);
-            setEmail(data.data.email);
-            setRole(data.data.role);
-        }).then(() => setDisable(false));
+          setName(data.data.name);
+          setEmail(data.data.email);
+          setRole(data.data.role);
+          setLoading(false);
+        }).then(() => setDisable(false)).catch(() => navigate("/dashboard/users/page/404", { replace: true }));
     },[])
 
     async function handleSubmit(e) {
