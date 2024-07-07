@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./bars.css";
-import { faPlus, faUsers } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Menu } from "../../Context/MenuContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { WindowSize } from "../../Context/WindowContext";
+import { USER } from "../../Api/Api";
+import { Axios } from "../../Api/Axios";
+import { links } from "./NavLink";
 
 export default function SideBar() {
   const menu = useContext(Menu);
@@ -14,6 +16,17 @@ export default function SideBar() {
   const isOpen = menu.isOpen;
   // console.log(isOpen);
   // console.log(menu);
+
+  //User
+  const navigate = useNavigate();
+  const [user, setUser] = useState("");
+  // console.log(user);
+
+  useEffect(() => {
+    Axios.get(`/${USER}`)
+      .then((data) => setUser(data.data))
+      .catch(() => navigate("/login", { replace: true }));
+  }, []);
 
   return (
     <>
@@ -25,20 +38,24 @@ export default function SideBar() {
           width: "100%",
           height: "100vh",
           backgroundColor: "rgba(0, 0, 0, 0.2",
-          display: windowSize < "768" && isOpen  ? "block" : "none",
+          display: windowSize < "768" && isOpen ? "block" : "none",
         }}></div>
       <div
         className="side-bar pt-3"
         style={{
           left: windowSize < "768" ? (isOpen ? 0 : "-100%") : "",
           width: isOpen ? "240px" : "fit-content",
-          position: windowSize < "768"? "fixed" : "sticky",
+          position: windowSize < "768" ? "fixed" : "sticky",
         }}>
-        <NavLink
-          to={"users"}
+
+          {links.map((link, key) => (
+            link.role.includes(user.role) &&(
+             <NavLink
+             key={key}
+          to={link.path}
           className="d-flex align-items-center gap-2 side-bar-link">
           <FontAwesomeIcon
-            icon={faUsers}
+            icon={link.icon}
             style={{ padding: isOpen ? "10px 8px 10px 15px" : "10px 14px" }}
           />
           <p
@@ -46,39 +63,11 @@ export default function SideBar() {
             style={{
               display: isOpen ? "block" : "none",
             }}>
-            Users
+            {link.name}
           </p>
         </NavLink>
-        <NavLink
-          to={"/dashboard/user/add"}
-          className="d-flex align-items-center gap-2 side-bar-link">
-          <FontAwesomeIcon
-            icon={faPlus}
-            style={{ padding: isOpen ? "10px 8px 10px 15px" : "10px 14px" }}
-          />
-          <p
-            className="m-0"
-            style={{
-              display: isOpen ? "block" : "none",
-            }}>
-            Add User
-          </p>
-        </NavLink>
-        <NavLink
-          to={"/dashboard/writer"}
-          className="d-flex align-items-center gap-2 side-bar-link">
-          <FontAwesomeIcon
-            icon={faPlus}
-            style={{ padding: isOpen ? "10px 8px 10px 15px" : "10px 14px" }}
-          />
-          <p
-            className="m-0"
-            style={{
-              display: isOpen ? "block" : "none",
-            }}>
-            Writer
-          </p>
-        </NavLink>
+          )))}
+       
 
         {/* <NavLink to={"products"} className="d-flex align-items-center gap-2 side-bar-link">
             <FontAwesomeIcon icon={faUsers} />

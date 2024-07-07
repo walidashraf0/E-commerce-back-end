@@ -26,7 +26,7 @@ export default function RequireAuth({ allowedRole }) {
   return token ? (
     user === "" ? (
       <Loading />
-    ) : user.role === allowedRole ? (
+    ) : allowedRole.includes(user.role) ? (
       <Outlet />
     ) : (
       <Err403 />
