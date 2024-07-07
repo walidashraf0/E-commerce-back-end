@@ -7,6 +7,7 @@ import { Axios } from "../../Api/Axios";
 import Err403 from "./403";
 
 export default function RequireAuth({ allowedRole }) {
+
   const navigate = useNavigate();
 
   //User
@@ -29,7 +30,7 @@ export default function RequireAuth({ allowedRole }) {
     ) : allowedRole.includes(user.role) ? (
       <Outlet />
     ) : (
-      <Err403 />
+      <Err403 role={user.role} />
     )
   ) : (
     <Navigate to={"/login"} replace={true} />

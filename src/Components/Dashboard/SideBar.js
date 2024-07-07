@@ -49,7 +49,7 @@ export default function SideBar() {
         }}>
 
           {links.map((link, key) => (
-            link.role.includes(user.role) &&(
+            link.role.includes(user.role) && (
              <NavLink
              key={key}
           to={link.path}
