@@ -5,15 +5,7 @@ import { Link } from "react-router-dom";
 import { Axios } from "../../Api/Axios";
 
 export default function TableShow(props) {
-  // Handle Delete
-  async function handleDelete(id) {
-    try {
-      const res = await Axios.delete(`${props.delete}/${id}`);
-      // setDeleteUser((prev) => !prev);
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const currentUser = props.currentUser || false;
 
   //Header Show
   const headerShow = props.header.map((item) => <th>{item.name}</th>);
@@ -32,6 +24,11 @@ export default function TableShow(props) {
             : item[item2.key] === "1999"
             ? "Product Manger"
             : item[item2.key]}
+          {currentUser
+            ? item[item2.key] === currentUser.name
+              ? " (You)"
+              : ""
+            : ""}
         </td>
       ))}
       <td>
@@ -39,13 +36,17 @@ export default function TableShow(props) {
           <Link to={`${item.id}`}>
             <FontAwesomeIcon fontSize={"19px"} icon={faPenToSquare} />
           </Link>
-          <FontAwesomeIcon
-            onClick={() => handleDelete(item.id)}
-            fontSize={"19px"}
-            color="red"
-            cursor={"pointer"}
-            icon={faTrash}
-          />
+          {currentUser.name !== item.name ? (
+            <FontAwesomeIcon
+              onClick={() => props.delete(item.id)}
+              fontSize={"19px"}
+              color="red"
+              cursor={"pointer"}
+              icon={faTrash}
+            />
+          ) : (
+            ""
+          )}
         </div>
       </td>
     </tr>
@@ -63,7 +64,16 @@ export default function TableShow(props) {
           </tr>
         </thead>
 
-        <tbody>{dataShow}</tbody>
+        <tbody>
+          {props.data.length === 0 ? (
+            <tr className="text-center">
+              <td colSpan={12}>Loading...</td>
+            </tr>
+          ) : (
+            ""
+          )}
+          {dataShow}
+        </tbody>
       </Table>
     </>
   );
