@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { USER, USERS } from "../../Api/Api";
-import { Table } from "react-bootstrap";
 import { Axios } from "../../Api/Axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import TableShow from "../../Components/Dashboard/Table";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -22,6 +22,21 @@ export default function Users() {
       .then(() => setNoUsers(true))
       .catch((err) => console.log(err));
   }, [deleteUser]);
+
+  const header = [
+    {
+      key: 'name',
+      name: 'Username',
+    },
+    {
+      key: 'email',
+      name: 'Email',
+    },
+    {
+      key: 'role',
+      name: 'Role',
+    },
+  ];
 
 
   const usersShow = users.map((user, key) => (
@@ -68,36 +83,7 @@ export default function Users() {
           <h1>Users Page</h1>
           <Link className="btn btn-primary" to="/dashboard/user/add">Add User</Link>
         </div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Username</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.length === 0 ? (
-              <tr>
-                <td colSpan={12} className="text-center">
-                  {" "}
-                  Loading...
-                </td>
-              </tr>
-            ) : users.length === 0 && noUsers ? (
-              <tr>
-                <td colSpan={12} className="text-center">
-                  {" "}
-                  No Users Found
-                </td>
-              </tr>
-            ) : (
-              usersShow
-            )}
-          </tbody>
-        </Table>
+        <TableShow header={ header } data={ users } delete={USER} />
       </div>
       {/* <Logout /> */}
     </>
