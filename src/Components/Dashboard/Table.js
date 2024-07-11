@@ -2,10 +2,10 @@ import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Axios } from "../../Api/Axios";
-
 export default function TableShow(props) {
-  const currentUser = props.currentUser || false;
+  const currentUser = props.currentUser || {
+    name: "",
+  };
 
   //Header Show
   const headerShow = props.header.map((item) => <th>{item.name}</th>);
@@ -15,7 +15,7 @@ export default function TableShow(props) {
       <td>{key + 1}</td>
       {props.header.map((item2, key2) => (
         <td key={key2}>
-          {item[item2.key] === "1995"
+          {item2.key === 'image' ? <img width="50px" src={item[item2.key]} alt="category-image" /> : item[item2.key] === "1995"
             ? "Admin"
             : item[item2.key] === "2001"
             ? "User"
