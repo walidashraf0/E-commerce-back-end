@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { Axios } from "../../Api/Axios";
 import { CATEGORY } from "../../Api/Api";
@@ -26,6 +26,14 @@ export default function AddCategory() {
         }
     }
 
+      //Ref
+  const focus = useRef("");
+
+    // Handle Focus
+    useEffect(() => {
+      focus.current.focus();
+    }, [])
+
 
 
   return (
@@ -35,7 +43,7 @@ export default function AddCategory() {
       <Form className="bg-white w-100 mx-2 p-3" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>Title</Form.Label>
-          <Form.Control value={title} onChange={(e) => setTitle(e.target.value)} type="text" required placeholder="title..." />
+          <Form.Control ref={focus} value={title} onChange={(e) => setTitle(e.target.value)} type="text" required placeholder="title..." />
         </Form.Group>
         <Form.Group className="mb-3" controlId="image">
           <Form.Label>Image</Form.Label>

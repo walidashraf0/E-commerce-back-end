@@ -9,12 +9,12 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import RequireAuth from "./Pages/Auth/RequireAuth";
 import User from "./Pages/Dashboard/User";
 import AddUser from "./Pages/Dashboard/AddUser";
-// import Err403 from "./Pages/Auth/403";
 import Writer from "./Pages/Dashboard/Writer";
 import Err404 from "./Pages/Auth/404";
 import RequireBack from "./Pages/Auth/RequireBack";
 import Categories from "./Pages/Dashboard/Categories";
 import AddCategory from "./Pages/Dashboard/AddCategory";
+import Category from "./Pages/Dashboard/Category";
 // import TopBar from './Components/Dashboard/TopBar';
 // import SideBar from './Components/Dashboard/SideBar';
 
@@ -40,6 +40,7 @@ function App() {
             </Route>
             <Route element={<RequireAuth allowedRole={["1999", "1995"]} />}>
               <Route path="categories" element={<Categories />} />
+              <Route path="categories/:id" element={<Category />} />
               <Route path="category/add" element={<AddCategory />} />
             </Route>
             <Route element={<RequireAuth allowedRole={["1996", "1995"]} />}>

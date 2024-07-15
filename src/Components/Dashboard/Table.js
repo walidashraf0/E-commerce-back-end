@@ -8,7 +8,7 @@ export default function TableShow(props) {
   };
 
   //Header Show
-  const headerShow = props.header.map((item) => <th>{item.name}</th>);
+  const headerShow = props.header.map((item, key) => <th key={key}>{item.name}</th>);
   //   Body Show
   const dataShow = props.data.map((item, key) => (
     <tr key={key}>

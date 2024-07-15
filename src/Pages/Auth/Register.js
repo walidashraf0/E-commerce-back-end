@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { REGISTER, baseURL } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
 import Cookie from "cookie-universal";
@@ -51,6 +51,14 @@ export default function Register() {
     }
   }
 
+    //Ref
+    const focus = useRef("");
+
+    // Handle Focus
+    useEffect(() => {
+      focus.current.focus();
+    }, [])
+
   console.log(form);
 
   return (
@@ -64,6 +72,7 @@ export default function Register() {
 
               <Form.Group className="form-custom">
                 <Form.Control
+                ref={focus}
                   type="text"
                   name="name"
                   value={form.name}

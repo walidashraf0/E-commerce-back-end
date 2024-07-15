@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { Axios } from "../../Api/Axios";
 import { USER } from "../../Api/Api";
@@ -31,6 +31,14 @@ export default function AddUser() {
         }
     }
 
+      //Ref
+  const focus = useRef("");
+
+    // Handle Focus
+    useEffect(() => {
+      focus.current.focus();
+    }, [])
+
 
 
   return (
@@ -40,7 +48,7 @@ export default function AddUser() {
       <Form className="bg-white w-100 mx-2 p-3" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>User Name</Form.Label>
-          <Form.Control value={name} onChange={(e) => setName(e.target.value)} type="text" required placeholder="name..." />
+          <Form.Control ref={focus} value={name} onChange={(e) => setName(e.target.value)} type="text" required placeholder="name..." />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlControlInput2">
           <Form.Label>Email</Form.Label>
