@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { Axios } from "../../Api/Axios";
-import { CATEGORY } from "../../Api/Api";
+import { PRODUCT } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
 import { useNavigate, useParams } from "react-router-dom";
 import { FormControl } from "react-bootstrap";
 
-export default function Category() {
+export default function Product() {
 
     
     const [title, setTitle] = useState("");
@@ -15,14 +15,14 @@ export default function Category() {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     // Id
-    const id = Number(window.location.pathname.replace("/dashboard/categories/", ""));
+    const id = Number(window.location.pathname.replace("/dashboard/products/", ""));
     // console.log(id);
     const idc = useParams();
     console.log(idc)
 
     useEffect(() => {
       setLoading(true);
-        Axios.get(`${CATEGORY}/${id}`).then((data) => {
+        Axios.get(`${PRODUCT}/${id}`).then((data) => {
           setTitle(data.data.title);
         //   setImage(data.data.image);
           setLoading(false);
@@ -36,8 +36,8 @@ export default function Category() {
         form.append('title', title);
         form.append('image', image);
         try {
-          const res = await Axios.post(`${CATEGORY}/edit/${id}`, form);
-          window.location.pathname = "/dashboard/categories";
+          const res = await Axios.post(`${PRODUCT}/edit/${id}`, form);
+          window.location.pathname = "/dashboard/products";
         }catch (err) {
           setLoading(false);
           console.log(err);
