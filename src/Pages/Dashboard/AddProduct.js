@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Form from 'react-bootstrap/Form';
 import Loading from "../../Components/Loading/Loading";
 import { Axios } from "../../Api/Axios";
-import { CATEGORIES } from "../../Api/Api";
+import { CATEGORIES, PRODUCT } from "../../Api/Api";
+import { useNavigate } from "react-router-dom";
 
 export default function AddProduct() {
 
@@ -15,27 +16,29 @@ export default function AddProduct() {
       about: "",
     });
 
-    const [image, setImage] = useState([]);
+    const [images, setImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
+    const nav = useNavigate();
 
 
-    // console.log(categories);
+    // console.log(images);
 
-    // async function handleSubmit(e) {
-    //   setLoading(true);
-    //     e.preventDefault();
-    //     const form = new FormData();
-    //     form.append('title', form.title);
-    //     form.append('image', image);
-    //     try {
-    //       const res = await Axios.post(`${CATEGORY}/add`, form);
-    //       window.location.pathname = "/dashboard/categories";
-    //     }catch (err) {
-    //       setLoading(false);
-    //       console.log(err);
-    //     }
-    // }
+    async function handleSubmit(e) {
+      setLoading(true);
+        e.preventDefault();
+        // const form = new FormData();
+        // form.append('title', form.title);
+        // form.append('image', image);
+        try {
+          const res = await Axios.post(`${PRODUCT}/add`, form);
+          nav("/dashboard/products");
+          // window.location.pathname = "/dashboard/categories";
+        }catch (err) {
+          setLoading(false);
+          console.log(err);
+        }
+    }
 
       //Ref
   const focus = useRef("");
@@ -67,7 +70,7 @@ export default function AddProduct() {
     <>
     {/* <h1>User</h1> */}
         {loading ? <Loading />: ""}
-      <Form className="bg-white w-100 mx-2 p-3" >
+      <Form className="bg-white w-100 mx-2 p-3" onSubmit={handleSubmit} >
       <Form.Group className="mb-3" controlId="category">
           <Form.Label>Category</Form.Label>
           <Form.Select name="category" ref={focus} value={form.category} onChange={handleChange}>
@@ -79,23 +82,27 @@ export default function AddProduct() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="title">
           <Form.Label>Title</Form.Label>
-          <Form.Control name="title" value={form.title} onChange={handleChange} type="text" required placeholder="title..." />
+          <Form.Control name="title" value={form.title} onChange={handleChange} type="text" placeholder="title..." />
         </Form.Group>
         <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
-          <Form.Control name="description" value={form.description} onChange={handleChange} type="text" required placeholder="description..." />
+          <Form.Control name="description" value={form.description} onChange={handleChange} type="text" placeholder="description..." />
         </Form.Group>
         <Form.Group className="mb-3" controlId="price">
           <Form.Label>Price</Form.Label>
-          <Form.Control name="price" value={form.price} onChange={handleChange} type="text" required placeholder="price..." />
+          <Form.Control name="price" value={form.price} onChange={handleChange} type="text" placeholder="price..." />
         </Form.Group>
         <Form.Group className="mb-3" controlId="discount">
           <Form.Label>Discount</Form.Label>
-          <Form.Control name="discount" value={form.discount} onChange={handleChange} type="text" required placeholder="discount..." />
+          <Form.Control name="discount" value={form.discount} onChange={handleChange} type="text" placeholder="discount..." />
         </Form.Group>
         <Form.Group className="mb-3" controlId="about">
           <Form.Label>About</Form.Label>
-          <Form.Control name="about" value={form.about} onChange={handleChange} type="text" required placeholder="about..." />
+          <Form.Control name="about" value={form.about} onChange={handleChange} type="text" placeholder="about..." />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="images">
+          <Form.Label>Upload Images</Form.Label>
+          <Form.Control multiple name="image" onChange={(e) => setImages(e.target.files)} type="file" />
         </Form.Group>
         
         
