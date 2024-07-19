@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Form from 'react-bootstrap/Form';
-import { Axios } from "../../Api/Axios";
-import { CATEGORY } from "../../Api/Api";
 import Loading from "../../Components/Loading/Loading";
+import { Axios } from "../../Api/Axios";
+import { CATEGORIES } from "../../Api/Api";
 
 export default function AddProduct() {
 
@@ -14,9 +14,13 @@ export default function AddProduct() {
       discount: "",
       about: "",
     });
+
     const [image, setImage] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(false);
 
+
+    // console.log(categories);
 
     // async function handleSubmit(e) {
     //   setLoading(true);
@@ -39,8 +43,24 @@ export default function AddProduct() {
     // Handle Focus
     useEffect(() => {
       focus.current.focus();
-    }, [])
+    }, []);
 
+    useEffect(() => {
+      Axios.get(`/${CATEGORIES}`)
+        .then((data) => setCategories(data.data))
+        .catch((err) => console.log(err));
+    }, []);
+
+
+    function handleChange(e) {
+      setForm({...form, [e.target.name]: e.target.value});
+    }
+
+    const categoriesShow = categories.map((item, key) => {
+      return <option key={key} value={item.id}>{item.title}</option>;
+    });
+
+    // console.log(form);
 
 
   return (
@@ -48,31 +68,34 @@ export default function AddProduct() {
     {/* <h1>User</h1> */}
         {loading ? <Loading />: ""}
       <Form className="bg-white w-100 mx-2 p-3" >
-      <Form.Group className="mb-3" controlId="exampleForm.ControlControlInput4">
+      <Form.Group className="mb-3" controlId="category">
           <Form.Label>Category</Form.Label>
-          <Form.Select ref={focus} value={form.category} onChange={(e) => setForm(e.target.value)}>
+          <Form.Select name="category" ref={focus} value={form.category} onChange={handleChange}>
             <option disabled value={""}>Select Category</option>
+            {categoriesShow}
+            {/* <option value={"5"}>Category 1</option>
+            <option value={"10"}>Category 2</option> */}
           </Form.Select>
         </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Group className="mb-3" controlId="title">
           <Form.Label>Title</Form.Label>
-          <Form.Control value={form.title} onChange={(e) => setForm(e.target.value)} type="text" required placeholder="title..." />
+          <Form.Control name="title" value={form.title} onChange={handleChange} type="text" required placeholder="title..." />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Group className="mb-3" controlId="description">
           <Form.Label>Description</Form.Label>
-          <Form.Control value={form.description} onChange={(e) => setForm(e.target.value)} type="text" required placeholder="description..." />
+          <Form.Control name="description" value={form.description} onChange={handleChange} type="text" required placeholder="description..." />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Group className="mb-3" controlId="price">
           <Form.Label>Price</Form.Label>
-          <Form.Control value={form.price} onChange={(e) => setForm(e.target.value)} type="text" required placeholder="price..." />
+          <Form.Control name="price" value={form.price} onChange={handleChange} type="text" required placeholder="price..." />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Group className="mb-3" controlId="discount">
           <Form.Label>Discount</Form.Label>
-          <Form.Control value={form.discount} onChange={(e) => setForm(e.target.value)} type="text" required placeholder="discount..." />
+          <Form.Control name="discount" value={form.discount} onChange={handleChange} type="text" required placeholder="discount..." />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+        <Form.Group className="mb-3" controlId="about">
           <Form.Label>About</Form.Label>
-          <Form.Control value={form.about} onChange={(e) => setForm(e.target.value)} type="text" required placeholder="about..." />
+          <Form.Control name="about" value={form.about} onChange={handleChange} type="text" required placeholder="about..." />
         </Form.Group>
         
         
