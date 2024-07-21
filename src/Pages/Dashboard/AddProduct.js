@@ -22,7 +22,7 @@ export default function AddProduct() {
     const nav = useNavigate();
 
 
-    // console.log(images);
+    console.log(images);
 
     
     //Ref
@@ -67,11 +67,21 @@ export default function AddProduct() {
       setForm({...form, [e.target.name]: e.target.value});
     }
     
+    // Mapping
     const categoriesShow = categories.map((item, key) => (
       <option key={key} value={item.id}>{item.title}</option>
     ));
     
-    console.log(form);
+    const imagesShow = images.map((item, key) => (
+      <div className="d-flex justify-content-start align-items-center gap-2 border p-2 w-100">
+        <img width="80px" key={key} src={URL.createObjectURL(item)} alt={item.name}/>
+        <div>
+          <p className="mb-1">{item.name}</p>
+          <p>{item.size / 1024 < 900? (item.size / 1024).toFixed(2) +' KB' : (item.size / (1024 * 1024)).toFixed(2) +' MB'}</p>
+        </div>
+      </div>
+    ));
+    // console.log(form);
 
 
   return (
@@ -110,10 +120,12 @@ export default function AddProduct() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="images">
           <Form.Label>Upload Images</Form.Label>
-          <Form.Control multiple name="image" onChange={(e) => setImages(e.target.files)} type="file" />
+          <Form.Control multiple name="image" onChange={(e) => setImages([...e.target.files])} type="file" />
         </Form.Group>
         
-        
+        <div className="d-flex flex-column align-items-start gap-2 mb-2">
+        {imagesShow}
+        </div>
         <button disabled={form.title.length > 1 ? false: true} className="btn btn-primary">Save</button>
       </Form>
     </>
