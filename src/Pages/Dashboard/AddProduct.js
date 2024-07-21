@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 export default function AddProduct() {
 
     const [form, setForm ] = useState({
-      category: "",
+      category: "Select Category",
       title: "",
       description: "",
       price: "",
       discount: "",
-      about: "",
+      About: "",
     });
 
     const [images, setImages] = useState([]);
@@ -24,14 +24,37 @@ export default function AddProduct() {
 
     // console.log(images);
 
+    
+    //Ref
+    const focus = useRef("");
+    
+    // Handle Focus
+    useEffect(() => {
+      focus.current.focus();
+    }, []);
+    
+    // Get All Categories
+    useEffect(() => {
+      Axios.get(`/${CATEGORIES}`)
+      .then((data) => setCategories(data.data))
+        .catch((err) => console.log(err));
+    }, []);
+    
     async function handleSubmit(e) {
       setLoading(true);
         e.preventDefault();
-        // const form = new FormData();
-        // form.append('title', form.title);
-        // form.append('image', image);
+        const data = new FormData();
+        data.append('title', form.title);
+        data.append('category', form.category);
+        data.append('description', form.description);
+        data.append('price', form.price);
+        data.append('discount', form.discount);
+        data.append('About', form.About);
+        for (let i = 0; i < images.length; i++) {
+          data.append('images[]', images[i])
+        }
         try {
-          const res = await Axios.post(`${PRODUCT}/add`, form);
+          const res = await Axios.post(`${PRODUCT}/add`, data);
           nav("/dashboard/products");
           // window.location.pathname = "/dashboard/categories";
         }catch (err) {
@@ -39,31 +62,16 @@ export default function AddProduct() {
           console.log(err);
         }
     }
-
-      //Ref
-  const focus = useRef("");
-
-    // Handle Focus
-    useEffect(() => {
-      focus.current.focus();
-    }, []);
-
-    useEffect(() => {
-      Axios.get(`/${CATEGORIES}`)
-        .then((data) => setCategories(data.data))
-        .catch((err) => console.log(err));
-    }, []);
-
-
+    
     function handleChange(e) {
       setForm({...form, [e.target.name]: e.target.value});
     }
-
-    const categoriesShow = categories.map((item, key) => {
-      return <option key={key} value={item.id}>{item.title}</option>;
-    });
-
-    // console.log(form);
+    
+    const categoriesShow = categories.map((item, key) => (
+      <option key={key} value={item.id}>{item.title}</option>
+    ));
+    
+    console.log(form);
 
 
   return (
@@ -74,7 +82,7 @@ export default function AddProduct() {
       <Form.Group className="mb-3" controlId="category">
           <Form.Label>Category</Form.Label>
           <Form.Select name="category" ref={focus} value={form.category} onChange={handleChange}>
-            <option disabled value={""}>Select Category</option>
+            <option disabled>Select Category</option>
             {categoriesShow}
             {/* <option value={"5"}>Category 1</option>
             <option value={"10"}>Category 2</option> */}
@@ -98,7 +106,7 @@ export default function AddProduct() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="about">
           <Form.Label>About</Form.Label>
-          <Form.Control name="about" value={form.about} onChange={handleChange} type="text" placeholder="about..." />
+          <Form.Control name="About" value={form.About} onChange={handleChange} type="text" placeholder="about..." />
         </Form.Group>
         <Form.Group className="mb-3" controlId="images">
           <Form.Label>Upload Images</Form.Label>

@@ -7,6 +7,7 @@ import TableShow from "../../Components/Dashboard/Table";
 export default function Products() {
   const [products, setProducts] = useState([]);
 
+  console.log(products)
 
   useEffect(() => {
     Axios.get(`/${PRODUCTS}`)
